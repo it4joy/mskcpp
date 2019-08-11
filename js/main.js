@@ -10,10 +10,6 @@ const regExps = {
 };
 
 
-const ajax = () => {
-    alert(7);
-};
-
 const hideError = () => {
     setTimeout(function() {
         $('.error-msg').fadeOut();
