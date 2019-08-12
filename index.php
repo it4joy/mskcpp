@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-md-6 offset-md-3">
                         <h2 class="text-center">Гостевая книга</h2>
-                        <p class="text-center">Оставьте свое сообщение в форме ниже.</p>
+                        <p class="text-center">Оставьте свое сообщение в форме ниже</p>
                     </div>
                 </div>
                 <div class="row">
@@ -42,6 +42,11 @@
                                 <button type="button" class="btn btn-primary btn-post">Отправить</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+                <div class="posts-wrapper">
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2"></div>
                     </div>
                 </div>
             </div>
