@@ -20,6 +20,7 @@ if ( !empty($_POST) ) {
                             <h6 class='card-subtitle text-muted'>" . $row["TimeStamp"] . "</h6>
                             <p class='card-text'>" . $row["Message"] . "</p>
                             <p class='card-text text-muted'>Email: <a href='mailto:" . $row["Email"] . "'>" . $row["Email"] . "</a></p>
+                            <p class='card-text text-muted'>ID: " . $row["ID"] . "</p>
                         </div>
                     </div>";
             }
@@ -28,16 +29,6 @@ if ( !empty($_POST) ) {
         }
     }
 
-    // counting of records
-    if ( $_POST["action"] === "get_count" ) {
-        $query = "SELECT COUNT(Name) AS num_rows FROM Guest_book";
-
-        if ( $result = mysqli_query($link, $query) ) {
-            while( $row = mysqli_fetch_array($result) ) {
-                echo json_encode( array("num_rows" => $row["num_rows"]) );
-            }
-        }
-    }
 
     // output by scroll
     if ( $_POST["action"] === "scroll" ) {

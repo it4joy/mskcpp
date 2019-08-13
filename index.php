@@ -9,6 +9,7 @@
         <link href="css/main.css" rel="stylesheet" type="text/css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript" defer></script>
         <script src="js/main.js" type="text/javascript" defer></script>
+        <script src="https://use.fontawesome.com/445721fe4f.js" async></script>
     </head>
 
     <body>
@@ -50,6 +51,10 @@
                     </div>
                 </div>
             </div>
+
+            <a href="#" class="scrollup">
+                <i class="fa fa-chevron-up"></i>
+            </a>
         </div>
     </body>
 </html>

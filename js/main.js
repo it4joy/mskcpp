@@ -9,9 +9,8 @@ const regExps = {
     emailRegExp: /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i
 };
 
-let scrollCounter = 3;
+let scrollCounter = 1;
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
-let countOfPosts = 0;
 
 
 const hideError = () => {
@@ -20,24 +19,6 @@ const hideError = () => {
     }, 4000);
 };
 
-
-const getCountOfPosts = () => {
-    $.ajax({
-        method: 'POST',
-        url: 'php/app.php',
-        data: {
-            action: 'get_count'
-        },
-        success: function(data) {
-            const countOfPostsRaw = $.parseJSON(data);
-            countOfPosts = countOfPostsRaw.num_rows;
-            //console.log(`The count of posts is: ${countOfPosts}`); // test
-        },
-        error: function() {
-            console.log('Can\'t to count the amount of records.');
-        }
-    });
-};
 
 const getInitPosts = () => {
     $.ajax({
@@ -94,9 +75,10 @@ $('.btn-post').on('click', function() {
 
 $(window).on('load', function() {
     getInitPosts();
-    getCountOfPosts();
 });
 
+
+// output by scroll
 $(window).on('scroll', function() {
     pageYOffsetCurrent = window.pageYOffset;
 
@@ -110,14 +92,24 @@ $(window).on('scroll', function() {
             },
             success: function(data) {
                 $('.posts-wrapper').find('.col-md-8 .card:last-child').after(data);
-                ++scrollCounter;
-                console.log(scrollCounter); // test
             },
             error: function() {
                 alert('End of posts');
             }
         });
+
+        $(".scrollup").fadeIn();
+    } else {
+        $(".scrollup").fadeOut();
     }
 
     pageYOffset = pageYOffsetCurrent;
+    ++scrollCounter;
+    console.log(scrollCounter); // test
+});
+
+
+$(".scrollup").click(function(e) {
+    e.preventDefault();
+    $("html, body").animate({ scrollTop: 0 }, 600);
 });

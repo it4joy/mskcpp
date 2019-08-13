@@ -2,6 +2,24 @@
     min-height: 150px;
 }
 
+.scrollup {
+	position: fixed;
+	top: 70px;
+	right: 30px;
+	display: none;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, .5);
+	text-align: center;
+	line-height: 36px;
+	color: #fff !important;
+	transition: all .3s linear;
+}
+.scrollup:hover {
+	background: rgba(0, 0, 0, .85);
+}
+
 .card {
     margin-bottom: 20px;
 }
