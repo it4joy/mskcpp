@@ -83,6 +83,7 @@ $('.btn-post').on('click', function() {
                 alert(response);
                 form.trigger('reset');
                 getInitPosts(); // shows just added post
+                $(window).trigger('scroll'); // test
             },
             error: function(jqxhr, status, errMsg) {
                 console.log(`Статус: ${status}. Ошибка: ${errMsg}`);
