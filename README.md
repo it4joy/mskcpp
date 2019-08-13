@@ -14,7 +14,7 @@ Test task for Moscow collegium of advocates (center of law support)
 **Hosting**
 
 
-* Link to showcase: [it4joy.ru/mskcpp_test/index.php](https://it4joy.ru/mskcpp_test/index.php)
+* Link to showcase (please, open in the new tab using context menu): [it4joy.ru/mskcpp_test/index.php](https://it4joy.ru/mskcpp_test/index.php)
 * Hoster: Beget
 * HTTP/2
 * HTTPS by Let's Encrypt
