@@ -3,6 +3,7 @@
 const errorsObj = {
     emptyFields: 'Заполните, пожалуйста, поле',
     invalidEmail: 'Email необходимо ввести в формате (пример): example@domain.com (без пробелов)',
+    tooManySymbols: 'Ограничение на длину текста в символах: 255',
 };
 
 const regExps = {
@@ -14,6 +15,14 @@ let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
 
 
 const hideError = () => {
+    if ( $('.msg-error').length > 1 ) {
+        $('.msg-error').each(function(i, el) {
+            if (i !== 0) {
+                $(this).hide();
+            }
+        });
+    }
+
     setTimeout(function() {
         $('.error-msg').fadeOut();
     }, 4000);
@@ -36,6 +45,19 @@ const getInitPosts = () => {
     });
 };
 
+
+// adding a post
+$('#form-post #message').on('input', function() {
+    if ( $(this).val().length > 255 ) {
+        const msg = $(this).val();
+        const msgCropped = msg.substring(0, 255);
+        $(this).val(msgCropped);
+        console.log( $(this).val().length ); // test
+        $(this).after(`<p class="error-msg text-danger msg-error">${errorsObj.tooManySymbols}</p>`);
+        hideError();
+        return false;
+    }
+});
 
 $('.btn-post').on('click', function() {
     const form = $(this).parents('.form');

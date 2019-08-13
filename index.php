@@ -29,7 +29,7 @@
                         <form id="form-post" class="form">
                             <div class="form-group">
                                 <label for="name">Имя и фамилия</label>
-                                <input type="text" id="name" class="form-control" name="name" placeholder="Введите имя и фамилию">
+                                <input type="text" id="name" class="form-control" name="name" placeholder="Введите имя и фамилию" autofocus>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
