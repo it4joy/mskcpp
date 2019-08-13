@@ -2,7 +2,7 @@
 Test task for Moscow collegium of advocates (center of law support)  
 
 ## Features
-#### Tech
+### Tech
 
 **Code**
 
@@ -20,6 +20,6 @@ Test task for Moscow collegium of advocates (center of law support)
 * HTTPS by Let's Encrypt
 * PHP 7.0
 
-#### Other
+### Other
 
 * The emptyness of ID's values between 33 and 27 is the result of deleting them.
