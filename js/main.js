@@ -12,6 +12,8 @@ const regExps = {
 
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
 let scrollCounter = 2;
+let sendingPostsCounter = 0;
+let ajaxScrollInProgress = false;
 console.log(`Scroll counter value (on the top): ${scrollCounter}`); // test
 
 
@@ -62,16 +64,34 @@ $('#form-post #message').on('input', function() {
 
 $('.btn-post').on('click', function() {
     const form = $(this).parents('.form');
+    let emptyFieldsCounter = 0;
+    let validity = false;
 
-    form.find('input, textarea').each(function() {
-        if ( $(this).val().length === 0 ) {
-            $(this).after(`<p class="error-msg text-danger">${errorsObj.emptyFields}</p>`);
-        }
-    });
+    const checkEmptyFields = () => {
+        form.find('input, textarea').each(function() {
+            if ( $(this).val().length === 0 ) {
+                $(this).after(`<p class="error-msg text-danger">${errorsObj.emptyFields}</p>`);
+                ++emptyFieldsCounter;
+            }
+        });
 
-    if ( $('#email').val().search(regExps.emailRegExp) == -1 ) {
+        hideError();
+        return emptyFieldsCounter;
+    };
+
+    if ( checkEmptyFields() > 0 ) {
+        validity = false;
+        return false;
+    } else if ( $('#email').val().search(regExps.emailRegExp) == -1 ) {
         $('#email').after(`<p class="error-msg text-danger">${errorsObj.invalidEmail}</p>`);
+        hideError();
+        validity = false;
+        return false;
     } else {
+        validity = true;
+    }
+
+    if ( validity === true ) {
         const postData = form.serialize() + '&action=add_post';
 
         $.ajax({
@@ -84,7 +104,8 @@ $('.btn-post').on('click', function() {
                 alert(response);
                 form.trigger('reset');
                 getInitPosts(); // shows just added post
-                $(window).trigger('scroll'); // test
+                //++sendingPostsCounter; // N: check 2nd & 3rd sending of new post!
+                scrollCounter = 2; // sets initial value again
             },
             error: function(jqxhr, status, errMsg) {
                 console.log(`Статус: ${status}. Ошибка: ${errMsg}`);
@@ -92,8 +113,6 @@ $('.btn-post').on('click', function() {
             }
         });
     }
-
-    hideError();
 });
 
 
@@ -114,11 +133,13 @@ $(window).on('scroll', function() {
                 action: 'scroll',
                 scroll_counter: scrollCounter
             },
+            beforeSend: function() {
+                ajaxScrollInProgress = true;
+            },
             success: function(data) {
-                const responseRaw = $.parseJSON(data);
-                const content = responseRaw.content;
-                $('.posts-wrapper').find('.col-md-8 .card:last-child').after(content);
-                scrollCounter = responseRaw.scroll_counter_updt;
+                ajaxScrollInProgress = false;
+                scrollCounter += 3;
+                $('.posts-wrapper').find('.col-md-8 .card:last-child').after(data);
                 console.log(`Scroll counter after increment: ${scrollCounter}`); // test
             },
             error: function() {

@@ -31,14 +31,11 @@ if ( !empty($_POST) ) {
     if ( $_POST["action"] === "scroll" ) {
         $scrollCounter = $_POST["scroll_counter"];
 
-        $query = "SELECT * FROM Guest_book ORDER BY TimeStamp DESC LIMIT 1 OFFSET " . $scrollCounter;
+        $query = "SELECT * FROM Guest_book ORDER BY TimeStamp DESC LIMIT 3 OFFSET " . $scrollCounter;
 
         if ( $result = mysqli_query($link, $query) ) {
-            $post = "";
-            global $post;
-
             while( $row = mysqli_fetch_array($result) ) {
-                $post = "
+                echo "
                     <div class='card'>
                         <div class='card-body'>
                             <h5 class='card-title'>" . $row["Name"] . "</h5>
@@ -49,9 +46,6 @@ if ( !empty($_POST) ) {
                         </div>
                     </div>";
             }
-
-            $scrollCounter++;
-            echo json_encode( array("content" => $post, "scroll_counter_updt" => $scrollCounter) );
         }
     }
 
