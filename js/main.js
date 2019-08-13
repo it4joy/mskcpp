@@ -10,15 +10,16 @@ const regExps = {
     emailRegExp: /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i
 };
 
-let scrollCounter = 1;
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
+let scrollCounter = 2;
+console.log(`Scroll counter value (on the top): ${scrollCounter}`); // test
 
 
 const hideError = () => {
     if ( $('.msg-error').length > 1 ) {
         $('.msg-error').each(function(i, el) {
             if (i !== 0) {
-                $(this).hide();
+                $(this).remove();
             }
         });
     }
@@ -111,10 +112,14 @@ $(window).on('scroll', function() {
             url: 'php/app.php',
             data: {
                 action: 'scroll',
-                scroll_counter: scrollCounter,
+                scroll_counter: scrollCounter
             },
             success: function(data) {
-                $('.posts-wrapper').find('.col-md-8 .card:last-child').after(data);
+                const responseRaw = $.parseJSON(data);
+                const content = responseRaw.content;
+                $('.posts-wrapper').find('.col-md-8 .card:last-child').after(content);
+                scrollCounter = responseRaw.scroll_counter_updt;
+                console.log(`Scroll counter after increment: ${scrollCounter}`); // test
             },
             error: function() {
                 alert('End of posts');
@@ -127,8 +132,6 @@ $(window).on('scroll', function() {
     }
 
     pageYOffset = pageYOffsetCurrent;
-    ++scrollCounter;
-    console.log(scrollCounter); // test
 });
 
 

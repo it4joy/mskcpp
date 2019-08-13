@@ -2,9 +2,6 @@
 
 require_once("db.php");
 
-/* function getPosts() {
-    
-} */
 
 if ( !empty($_POST) ) {
     // initial output
@@ -33,11 +30,15 @@ if ( !empty($_POST) ) {
     // output by scroll
     if ( $_POST["action"] === "scroll" ) {
         $scrollCounter = $_POST["scroll_counter"];
+
         $query = "SELECT * FROM Guest_book ORDER BY TimeStamp DESC LIMIT 1 OFFSET " . $scrollCounter;
 
         if ( $result = mysqli_query($link, $query) ) {
+            $post = "";
+            global $post;
+
             while( $row = mysqli_fetch_array($result) ) {
-                echo "
+                $post = "
                     <div class='card'>
                         <div class='card-body'>
                             <h5 class='card-title'>" . $row["Name"] . "</h5>
@@ -48,6 +49,9 @@ if ( !empty($_POST) ) {
                         </div>
                     </div>";
             }
+
+            $scrollCounter++;
+            echo json_encode( array("content" => $post, "scroll_counter_updt" => $scrollCounter) );
         }
     }
 
