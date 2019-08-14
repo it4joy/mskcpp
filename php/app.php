@@ -34,8 +34,13 @@ if ( !empty($_POST) ) {
         $query = "SELECT * FROM Guest_book ORDER BY TimeStamp DESC LIMIT 3 OFFSET " . $scrollCounter;
 
         if ( $result = mysqli_query($link, $query) ) {
+            $post = "";
+            $id = "";
+            global $post;
+            global $id;
+
             while( $row = mysqli_fetch_array($result) ) {
-                echo "
+                $post = "
                     <div class='card'>
                         <div class='card-body'>
                             <h5 class='card-title'>" . $row["Name"] . "</h5>
@@ -45,7 +50,11 @@ if ( !empty($_POST) ) {
                             <p class='card-text text-muted'>ID: " . $row["ID"] . "</p>
                         </div>
                     </div>";
+
+                $id = $row["ID"];
             }
+
+            echo json_encode( array("content" => $post, "current_id" => $id) );
         }
     }
 

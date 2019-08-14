@@ -137,10 +137,15 @@ $(window).on('scroll', function() {
                 ajaxScrollInProgress = true;
             },
             success: function(data) {
-                ajaxScrollInProgress = false;
+                const responseRaw = $.parseJSON(data);
+                const content = responseRaw.content;
+                const currentPostId = responseRaw.current_id;
+                if ( currentPostId + 3 === scrollCounter ) {
+                    $('.posts-wrapper').find('.col-md-8 .card:last-child').after(content);
+                }
                 scrollCounter += 3;
-                $('.posts-wrapper').find('.col-md-8 .card:last-child').after(data);
                 console.log(`Scroll counter after increment: ${scrollCounter}`); // test
+                ajaxScrollInProgress = false;
             },
             error: function() {
                 alert('End of posts');
