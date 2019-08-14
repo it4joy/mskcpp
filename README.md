@@ -1,5 +1,6 @@
 # mskcpp
 Test task for Moscow collegium of advocates (center of law support)  
+Guest book with post appearing by scroll via AJAX  
 
 ## Features
 ### Tech
