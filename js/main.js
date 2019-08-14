@@ -11,7 +11,7 @@ const regExps = {
 };
 
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
-let scrollCounter = 2;
+let scrollCounter = 3;
 let sendingPostsCounter = 0;
 let ajaxScrollInProgress = false;
 console.log(`Scroll counter value (on the top): ${scrollCounter}`); // test
@@ -124,8 +124,17 @@ $(window).on('load', function() {
 // output by scroll
 $(window).on('scroll', function() {
     pageYOffsetCurrent = window.pageYOffset;
+    const winHeight = $(window).height();
+
+    if ( pageYOffsetCurrent > winHeight ) {
+        $(".scrollup").fadeIn();
+    } else {
+        $(".scrollup").fadeOut();
+    }
 
     if ( pageYOffsetCurrent > pageYOffset ) {
+        console.log('Scroll direction: to bottom');
+
         $.ajax({
             method: 'POST',
             url: 'php/app.php',
@@ -137,19 +146,15 @@ $(window).on('scroll', function() {
                 ajaxScrollInProgress = true;
             },
             success: function(data) {
-                ajaxScrollInProgress = false;
                 scrollCounter += 3;
                 $('.posts-wrapper').find('.col-md-8 .card:last-child').after(data);
                 console.log(`Scroll counter after increment: ${scrollCounter}`); // test
+                ajaxScrollInProgress = false;
             },
             error: function() {
                 alert('End of posts');
             }
         });
-
-        $(".scrollup").fadeIn();
-    } else {
-        $(".scrollup").fadeOut();
     }
 
     pageYOffset = pageYOffsetCurrent;

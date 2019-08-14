@@ -6,7 +6,7 @@ require_once("db.php");
 if ( !empty($_POST) ) {
     // initial output
     if ( $_POST["action"] === "init_select" ) {
-        $query = "SELECT * FROM Guest_book ORDER BY TimeStamp DESC LIMIT 2";
+        $query = "SELECT * FROM Guest_book ORDER BY TimeStamp DESC LIMIT 3";
 
         if ( $result = mysqli_query($link, $query) ) {
             while( $row = mysqli_fetch_array($result) ) {
@@ -49,6 +49,7 @@ if ( !empty($_POST) ) {
         }
     }
 
+    // adding post
     if ( $_POST["action"] === "add_post" ) {
         $name = $_POST["name"];
         $email = $_POST["email"];
