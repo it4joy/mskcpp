@@ -154,6 +154,8 @@ $(window).on('scroll', function() {
                             </div>
                         </div>
                         `);
+                        
+                        console.log(`Current index: ${indx}; Post ID: ${post.ID}`); // test
                     });
                 }
 
