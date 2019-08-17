@@ -6,7 +6,7 @@ require_once("db.php");
 if ( !empty($_POST) ) {
     // initial output
     if ( $_POST["action"] === "init_select" ) {
-        $query = "SELECT * FROM Guest_book ORDER BY TimeStamp DESC LIMIT 3";
+        $query = "SELECT * FROM Guest_book ORDER BY ID DESC LIMIT 3";
 
         if ( $result = mysqli_query($link, $query) ) {
             while( $row = mysqli_fetch_array($result) ) {
@@ -34,18 +34,13 @@ if ( !empty($_POST) ) {
         $query = "SELECT * FROM Guest_book ORDER BY TimeStamp DESC LIMIT 3 OFFSET " . $scrollCounter;
 
         if ( $result = mysqli_query($link, $query) ) {
-            while( $row = mysqli_fetch_array($result) ) {
-                echo "
-                    <div class='card'>
-                        <div class='card-body'>
-                            <h5 class='card-title'>" . $row["Name"] . "</h5>
-                            <h6 class='card-subtitle text-muted'>" . $row["TimeStamp"] . "</h6>
-                            <p class='card-text'>" . $row["Message"] . "</p>
-                            <p class='card-text text-muted'>Email: <a href='mailto:" . $row["Email"] . "'>" . $row["Email"] . "</a></p>
-                            <p class='card-text text-muted'>ID: " . $row["ID"] . "</p>
-                        </div>
-                    </div>";
+            $articles = array();
+            
+            while ( $row = mysqli_fetch_assoc($result) ) {
+                $articles[] = $row;
             }
+
+            echo json_encode($articles);
         }
     }
 

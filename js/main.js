@@ -12,7 +12,6 @@ const regExps = {
 
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
 let scrollCounter = 3;
-let sendingPostsCounter = 0;
 let ajaxScrollInProgress = false;
 console.log(`Scroll counter value (on the top): ${scrollCounter}`); // test
 
@@ -104,8 +103,7 @@ $('.btn-post').on('click', function() {
                 alert(response);
                 form.trigger('reset');
                 getInitPosts(); // shows just added post
-                //++sendingPostsCounter; // N: check 2nd & 3rd sending of new post!
-                scrollCounter = 2; // sets initial value again
+                scrollCounter = 3; // sets initial value again
             },
             error: function(jqxhr, status, errMsg) {
                 console.log(`Статус: ${status}. Ошибка: ${errMsg}`);
@@ -113,11 +111,6 @@ $('.btn-post').on('click', function() {
             }
         });
     }
-});
-
-
-$(window).on('load', function() {
-    getInitPosts();
 });
 
 
@@ -146,10 +139,27 @@ $(window).on('scroll', function() {
                 ajaxScrollInProgress = true;
             },
             success: function(data) {
-                scrollCounter += 3;
-                $('.posts-wrapper').find('.col-md-8 .card:last-child').after(data);
-                console.log(`Scroll counter after increment: ${scrollCounter}`); // test
+                const content = $.parseJSON(data);
+
+                if (content.length > 0 && ajaxScrollInProgress === true) {
+                    $.each(content, function(indx, post) {
+                        $('.posts-wrapper').find('.col-md-8 .card:last-child').after(`
+                        <div class='card'>
+                            <div class='card-body'>
+                                <h5 class='card-title'>${post.Name}</h5>
+                                <h6 class='card-subtitle text-muted'>${post.TimeStamp}</h6>
+                                <p class='card-text'>${post.Message}</p>
+                                <p class='card-text text-muted'>Email: <a href='mailto:${post.Email}'>${post.Email}</a></p>
+                                <p class='card-text text-muted'>${post.ID}</p>
+                            </div>
+                        </div>
+                        `);
+                    });
+                }
+
                 ajaxScrollInProgress = false;
+                scrollCounter += 3;
+                console.log(`Scroll counter after increment: ${scrollCounter}`); // test
             },
             error: function() {
                 alert('End of posts');
@@ -164,4 +174,9 @@ $(window).on('scroll', function() {
 $(".scrollup").click(function(e) {
     e.preventDefault();
     $("html, body").animate({ scrollTop: 0 }, 600);
+});
+
+
+$(window).on('load', function() {
+    getInitPosts();
 });
