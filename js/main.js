@@ -43,7 +43,7 @@ const getInitPosts = () => {
 
             if (content.length > 0) {
                 $.each(content, function(indx, post) {
-                    $('.posts-wrapper').find('.col-md-8').html(`
+                    $('.posts-wrapper').find('.col-md-8 .card:last-child').after(`
                         <div class='card'>
                             <div class='card-body'>
                                 <h5 class='card-title'>${post.Name}</h5>
