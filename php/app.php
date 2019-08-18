@@ -27,29 +27,6 @@ if ( !empty($_POST) ) {
         $query = "SELECT * FROM Guest_book ORDER BY TimeStamp DESC LIMIT 3 OFFSET " . $scrollCounter;
 
         if ( $result = mysqli_query($link, $query) ) {
-<<<<<<< HEAD
-            $post = "";
-            $id = "";
-            global $post;
-            global $id;
-
-            while( $row = mysqli_fetch_array($result) ) {
-                $post = "
-                    <div class='card'>
-                        <div class='card-body'>
-                            <h5 class='card-title'>" . $row["Name"] . "</h5>
-                            <h6 class='card-subtitle text-muted'>" . $row["TimeStamp"] . "</h6>
-                            <p class='card-text'>" . $row["Message"] . "</p>
-                            <p class='card-text text-muted'>Email: <a href='mailto:" . $row["Email"] . "'>" . $row["Email"] . "</a></p>
-                            <p class='card-text text-muted'>ID: " . $row["ID"] . "</p>
-                        </div>
-                    </div>";
-
-                $id = $row["ID"];
-            }
-
-            echo json_encode( array("content" => $post, "current_id" => $id) );
-=======
             $articles = array();
             
             while ( $row = mysqli_fetch_assoc($result) ) {
@@ -57,10 +34,8 @@ if ( !empty($_POST) ) {
             }
 
             echo json_encode($articles);
->>>>>>> t20190814
         }
     }
-
 
     // adding post
     if ( $_POST["action"] === "add_post" ) {
