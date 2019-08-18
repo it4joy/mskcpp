@@ -47,7 +47,10 @@
                 </div>
                 <div class="posts-wrapper">
                     <div class="row">
-                        <div class="col-md-8 offset-md-2"></div>
+                        <div class="col-md-8 offset-md-2">
+                            <!-- for right output of initial posts -->
+                            <div class='card service-plug'></div>
+                        </div>
                     </div>
                 </div>
             </div>
