@@ -10,6 +10,7 @@ const regExps = {
     emailRegExp: /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i
 };
 
+
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
 let scrollCounter = 3;
 let ajaxScrollInProgress = false;
