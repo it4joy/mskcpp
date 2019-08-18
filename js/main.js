@@ -1,6 +1,6 @@
 'use strict';
 
-const errorsObj = {
+const errors = {
     emptyFields: 'Заполните, пожалуйста, поле',
     invalidEmail: 'Email необходимо ввести в формате (пример): example@domain.com (без пробелов)',
     tooManySymbols: 'Ограничение на длину текста в символах: 255',
@@ -71,7 +71,7 @@ $('#form-post #message').on('input', function() {
         const msgCropped = msg.substring(0, 255);
         $(this).val(msgCropped);
         console.log( $(this).val().length ); // test
-        $(this).after(`<p class="error-msg text-danger msg-error">${errorsObj.tooManySymbols}</p>`);
+        $(this).after(`<p class="error-msg text-danger msg-error">${errors.tooManySymbols}</p>`);
         hideError();
         return false;
     }
@@ -85,7 +85,7 @@ $('.btn-post').on('click', function() {
     const checkEmptyFields = () => {
         form.find('input, textarea').each(function() {
             if ( $(this).val().length === 0 ) {
-                $(this).after(`<p class="error-msg text-danger">${errorsObj.emptyFields}</p>`);
+                $(this).after(`<p class="error-msg text-danger">${errors.emptyFields}</p>`);
                 ++emptyFieldsCounter;
             }
         });
@@ -98,7 +98,7 @@ $('.btn-post').on('click', function() {
         validity = false;
         return false;
     } else if ( $('#email').val().search(regExps.emailRegExp) == -1 ) {
-        $('#email').after(`<p class="error-msg text-danger">${errorsObj.invalidEmail}</p>`);
+        $('#email').after(`<p class="error-msg text-danger">${errors.invalidEmail}</p>`);
         hideError();
         validity = false;
         return false;
