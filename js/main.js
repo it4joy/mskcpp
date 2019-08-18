@@ -39,10 +39,26 @@ const getInitPosts = () => {
             action: 'init_select'
         },
         success: function(data) {
-            $('.posts-wrapper').find('.col-md-8').html(data);
+            const content = $.parseJSON(data);
+
+            if (content.length > 0) {
+                $.each(content, function(indx, post) {
+                    $('.posts-wrapper').find('.col-md-8').html(`
+                        <div class='card'>
+                            <div class='card-body'>
+                                <h5 class='card-title'>${post.Name}</h5>
+                                <h6 class='card-subtitle text-muted'>${post.TimeStamp}</h6>
+                                <p class='card-text'>${post.Message}</p>
+                                <p class='card-text text-muted'>Email: <a href='mailto:${post.Email}'>${post.Email}</a></p>
+                                <p class='card-text text-muted'>${post.ID}</p>
+                            </div>
+                        </div>
+                    `);
+                });
+            }
         },
         error: function() {
-            alert('No posts');
+            alert('No posts...');
         }
     });
 };
