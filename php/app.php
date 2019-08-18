@@ -37,6 +37,7 @@ if ( !empty($_POST) ) {
         }
     }
 
+
     // adding post
     if ( $_POST["action"] === "add_post" ) {
         $name = $_POST["name"];
