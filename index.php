@@ -40,7 +40,7 @@
                                 <textarea id="message" class="form-control textarea" rows="5" name="message"></textarea>
                             </div>
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary btn-post">Отправить</button>
+                                <button type="button" class="btn btn-primary btn-post"><i class="fa fa-paper-plane"></i> Отправить</button>
                             </div>
                         </form>
                     </div>
