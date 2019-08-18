@@ -120,11 +120,14 @@ $('.btn-post').on('click', function() {
                 const responseRaw = $.parseJSON(data);
                 const response = responseRaw.response_success;
                 form.trigger('reset');
-                $(eNode).trigger('update_content'); // to show just added post
+                //$(eNode).trigger('update_content'); // to show just added post
                 setTimeout(function() {
                     alert(response);
                 }, 1000);
                 scrollCounter = 3; // sets initial value again
+                console.log(`Scroll counter after adding a post: ${scrollCounter}`); // test
+                $('.posts-wrapper').find('.col-md-8 .card:not(.service-plug)').remove();
+                getInitPosts();
             },
             error: function(jqxhr, status, errMsg) {
                 console.log(`Статус: ${status}. Ошибка: ${errMsg}`);
@@ -203,6 +206,7 @@ $(window).on('load', function() {
 });
 
 
-$(eNode).on('update_content', function() {
+/* $(eNode).on('update_content', function() {
     getInitPosts();
-});
+    console.log('Event: update_content');
+}); */
