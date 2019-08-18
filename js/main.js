@@ -1,6 +1,6 @@
 'use strict';
 
-const errors = {
+const errorsObj = {
     emptyFields: 'Заполните, пожалуйста, поле',
     invalidEmail: 'Email необходимо ввести в формате (пример): example@domain.com (без пробелов)',
     tooManySymbols: 'Ограничение на длину текста в символах: 255',
@@ -9,7 +9,6 @@ const errors = {
 const regExps = {
     emailRegExp: /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i
 };
-
 
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
 let scrollCounter = 3;
@@ -44,7 +43,7 @@ const getInitPosts = () => {
 
             if (content.length > 0) {
                 $.each(content, function(indx, post) {
-                    $('.posts-wrapper').find('.col-md-8 .card:last').after(`
+                    $('.posts-wrapper').find('.col-md-8').html(`
                         <div class='card'>
                             <div class='card-body'>
                                 <h5 class='card-title'>${post.Name}</h5>
@@ -72,7 +71,7 @@ $('#form-post #message').on('input', function() {
         const msgCropped = msg.substring(0, 255);
         $(this).val(msgCropped);
         console.log( $(this).val().length ); // test
-        $(this).after(`<p class="error-msg text-danger msg-error">${errors.tooManySymbols}</p>`);
+        $(this).after(`<p class="error-msg text-danger msg-error">${errorsObj.tooManySymbols}</p>`);
         hideError();
         return false;
     }
@@ -86,7 +85,7 @@ $('.btn-post').on('click', function() {
     const checkEmptyFields = () => {
         form.find('input, textarea').each(function() {
             if ( $(this).val().length === 0 ) {
-                $(this).after(`<p class="error-msg text-danger">${errors.emptyFields}</p>`);
+                $(this).after(`<p class="error-msg text-danger">${errorsObj.emptyFields}</p>`);
                 ++emptyFieldsCounter;
             }
         });
@@ -99,7 +98,7 @@ $('.btn-post').on('click', function() {
         validity = false;
         return false;
     } else if ( $('#email').val().search(regExps.emailRegExp) == -1 ) {
-        $('#email').after(`<p class="error-msg text-danger">${errors.invalidEmail}</p>`);
+        $('#email').after(`<p class="error-msg text-danger">${errorsObj.invalidEmail}</p>`);
         hideError();
         validity = false;
         return false;
@@ -158,14 +157,6 @@ $(window).on('scroll', function() {
                 ajaxScrollInProgress = true;
             },
             success: function(data) {
-<<<<<<< HEAD
-                const responseRaw = $.parseJSON(data);
-                const content = responseRaw.content;
-                const currentPostId = responseRaw.current_id;
-                if ( currentPostId + 3 === scrollCounter ) {
-                    $('.posts-wrapper').find('.col-md-8 .card:last-child').after(content);
-                }
-=======
                 const content = $.parseJSON(data);
 
                 if (content.length > 0) {
@@ -185,10 +176,8 @@ $(window).on('scroll', function() {
                 }
 
                 ajaxScrollInProgress = false;
->>>>>>> t20190814
                 scrollCounter += 3;
                 console.log(`Scroll counter after increment: ${scrollCounter}`); // test
-                ajaxScrollInProgress = false;
             },
             error: function() {
                 alert('End of posts');
