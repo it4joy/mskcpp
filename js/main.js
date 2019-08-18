@@ -13,7 +13,7 @@ const regExps = {
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
 let scrollCounter = 3;
 let ajaxScrollInProgress = false;
-console.log(`Scroll counter value (on the top): ${scrollCounter}`); // test
+console.log(`Scroll counter value (initial): ${scrollCounter}`); // test
 
 
 const hideError = () => {
@@ -100,8 +100,10 @@ $('.btn-post').on('click', function() {
             success: function(data) {
                 const responseRaw = $.parseJSON(data);
                 const response = responseRaw.response_success;
-                alert(response);
                 form.trigger('reset');
+                setTimeout(function() {
+                    alert(response);
+                }, 1000);
                 getInitPosts(); // shows just added post
                 scrollCounter = 3; // sets initial value again
             },
@@ -125,7 +127,7 @@ $(window).on('scroll', function() {
         $(".scrollup").fadeOut();
     }
 
-    if ( pageYOffsetCurrent > pageYOffset ) {
+    if ( pageYOffsetCurrent > pageYOffset && !ajaxScrollInProgress ) {
         console.log('Scroll direction: to bottom');
 
         $.ajax({
@@ -141,7 +143,7 @@ $(window).on('scroll', function() {
             success: function(data) {
                 const content = $.parseJSON(data);
 
-                if (content.length > 0 && ajaxScrollInProgress === true) {
+                if (content.length > 0) {
                     $.each(content, function(indx, post) {
                         $('.posts-wrapper').find('.col-md-8 .card:last-child').after(`
                         <div class='card'>
@@ -154,8 +156,6 @@ $(window).on('scroll', function() {
                             </div>
                         </div>
                         `);
-                        
-                        console.log(`Current index: ${indx}; Post ID: ${post.ID}`); // test
                     });
                 }
 
