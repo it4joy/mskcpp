@@ -11,10 +11,9 @@ const regExps = {
 };
 
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
-let scrollCounter = 2;
-let sendingPostsCounter = 0;
+let scrollCounter = 3;
 let ajaxScrollInProgress = false;
-console.log(`Scroll counter value (on the top): ${scrollCounter}`); // test
+console.log(`Scroll counter value (initial): ${scrollCounter}`); // test
 
 
 const hideError = () => {
@@ -101,11 +100,12 @@ $('.btn-post').on('click', function() {
             success: function(data) {
                 const responseRaw = $.parseJSON(data);
                 const response = responseRaw.response_success;
-                alert(response);
                 form.trigger('reset');
+                setTimeout(function() {
+                    alert(response);
+                }, 1000);
                 getInitPosts(); // shows just added post
-                //++sendingPostsCounter; // N: check 2nd & 3rd sending of new post!
-                scrollCounter = 2; // sets initial value again
+                scrollCounter = 3; // sets initial value again
             },
             error: function(jqxhr, status, errMsg) {
                 console.log(`Статус: ${status}. Ошибка: ${errMsg}`);
@@ -116,16 +116,20 @@ $('.btn-post').on('click', function() {
 });
 
 
-$(window).on('load', function() {
-    getInitPosts();
-});
-
-
 // output by scroll
 $(window).on('scroll', function() {
     pageYOffsetCurrent = window.pageYOffset;
+    const winHeight = $(window).height();
 
-    if ( pageYOffsetCurrent > pageYOffset ) {
+    if ( pageYOffsetCurrent > winHeight ) {
+        $(".scrollup").fadeIn();
+    } else {
+        $(".scrollup").fadeOut();
+    }
+
+    if ( pageYOffsetCurrent > pageYOffset && !ajaxScrollInProgress ) {
+        console.log('Scroll direction: to bottom');
+
         $.ajax({
             method: 'POST',
             url: 'php/app.php',
@@ -137,12 +141,34 @@ $(window).on('scroll', function() {
                 ajaxScrollInProgress = true;
             },
             success: function(data) {
+<<<<<<< HEAD
                 const responseRaw = $.parseJSON(data);
                 const content = responseRaw.content;
                 const currentPostId = responseRaw.current_id;
                 if ( currentPostId + 3 === scrollCounter ) {
                     $('.posts-wrapper').find('.col-md-8 .card:last-child').after(content);
                 }
+=======
+                const content = $.parseJSON(data);
+
+                if (content.length > 0) {
+                    $.each(content, function(indx, post) {
+                        $('.posts-wrapper').find('.col-md-8 .card:last-child').after(`
+                        <div class='card'>
+                            <div class='card-body'>
+                                <h5 class='card-title'>${post.Name}</h5>
+                                <h6 class='card-subtitle text-muted'>${post.TimeStamp}</h6>
+                                <p class='card-text'>${post.Message}</p>
+                                <p class='card-text text-muted'>Email: <a href='mailto:${post.Email}'>${post.Email}</a></p>
+                                <p class='card-text text-muted'>${post.ID}</p>
+                            </div>
+                        </div>
+                        `);
+                    });
+                }
+
+                ajaxScrollInProgress = false;
+>>>>>>> t20190814
                 scrollCounter += 3;
                 console.log(`Scroll counter after increment: ${scrollCounter}`); // test
                 ajaxScrollInProgress = false;
@@ -151,10 +177,6 @@ $(window).on('scroll', function() {
                 alert('End of posts');
             }
         });
-
-        $(".scrollup").fadeIn();
-    } else {
-        $(".scrollup").fadeOut();
     }
 
     pageYOffset = pageYOffsetCurrent;
@@ -164,4 +186,9 @@ $(window).on('scroll', function() {
 $(".scrollup").click(function(e) {
     e.preventDefault();
     $("html, body").animate({ scrollTop: 0 }, 600);
+});
+
+
+$(window).on('load', function() {
+    getInitPosts();
 });
