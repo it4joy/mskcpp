@@ -10,6 +10,8 @@ const regExps = {
     emailRegExp: /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i
 };
 
+// node for custom events
+const eNode = $({});
 
 let pageYOffset, pageYOffsetCurrent = window.pageYOffset;
 let scrollCounter = 3;
@@ -44,7 +46,7 @@ const getInitPosts = () => {
 
             if (content.length > 0) {
                 $.each(content, function(indx, post) {
-                    $('.posts-wrapper').find('.col-md-8').html(`
+                    $('.posts-wrapper').find('.col-md-8 .card').last().after(`
                         <div class='card'>
                             <div class='card-body'>
                                 <h5 class='card-title'>${post.Name}</h5>
@@ -118,11 +120,14 @@ $('.btn-post').on('click', function() {
                 const responseRaw = $.parseJSON(data);
                 const response = responseRaw.response_success;
                 form.trigger('reset');
+                //$(eNode).trigger('update_content'); // to show just added post
                 setTimeout(function() {
                     alert(response);
                 }, 1000);
-                getInitPosts(); // shows just added post
                 scrollCounter = 3; // sets initial value again
+                console.log(`Scroll counter after adding a post: ${scrollCounter}`); // test
+                $('.posts-wrapper').find('.col-md-8 .card:not(.service-plug)').remove();
+                getInitPosts();
             },
             error: function(jqxhr, status, errMsg) {
                 console.log(`Статус: ${status}. Ошибка: ${errMsg}`);
@@ -162,7 +167,7 @@ $(window).on('scroll', function() {
 
                 if (content.length > 0) {
                     $.each(content, function(indx, post) {
-                        $('.posts-wrapper').find('.col-md-8 .card:last-child').after(`
+                        $('.posts-wrapper').find('.col-md-8 .card').last().after(`
                         <div class='card'>
                             <div class='card-body'>
                                 <h5 class='card-title'>${post.Name}</h5>
@@ -199,3 +204,9 @@ $(".scrollup").click(function(e) {
 $(window).on('load', function() {
     getInitPosts();
 });
+
+
+/* $(eNode).on('update_content', function() {
+    getInitPosts();
+    console.log('Event: update_content');
+}); */
